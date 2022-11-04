@@ -9,8 +9,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -29,11 +31,13 @@ public class Product implements Serializable {
 	/*
 	 * usando o set porque não pode ter o mesmo produto em várias categorias Set >>
 	 * interface >> NÃO PODE ser instanciada HashSet >> classe >> PODE ser
-	 * instanciada 
-	 * NÃO coloca coleções no construtor porque já está sendo
+	 * instanciada NÃO coloca coleções no construtor porque já está sendo
 	 * instanciada
 	 */
-	@Transient
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", 
+	joinColumns = @JoinColumn(name = "product_id"), 
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 
 	public Product() {
